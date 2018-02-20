@@ -1,0 +1,59 @@
+#include "stdafx.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+class CParent
+{
+public:
+	int Child;
+public:
+	CParent(void) : Child(1) { printf("부모 생성자 호출!\n"); }
+	virtual ~CParent(void) { printf("부모 소멸자 호출!\n"); }
+	virtual void PrintInfo(void) { printf("나는 부모다!\n"); }
+	int GetChild(void) { return Child; }
+};
+
+class CChild : public CParent
+{
+public:
+	int PocketMoney;
+public:
+	CChild(void) : PocketMoney(10000) { printf("자식 생성자 호출!\n"); }
+	virtual ~CChild(void) { printf("자식 소멸자 호출!!\n"); }
+	virtual void PrintInfo(void) { printf("나는 자식이다!\n"); }
+	int GetPocketMoney(void) { return PocketMoney; }
+	//void PrintfPocketMoney(void) { printf("현재 용돈 : %d원\n", PocketMoney); }
+};
+
+
+int main(void)
+{
+
+	CParent Parent;
+	CChild Child;
+
+	int CParent::*pParentField;
+	int (CParent::*pParentMethod) (void);
+	int CChild::*pChildField;
+	int (CChild::*pChildMethod) (void);
+
+	pParentMethod = &CParent::GetChild;
+	printf("자식의 수 : %d\n\n", (Parent.*pParentMethod)());
+
+	pChildField = &CChild::PocketMoney;
+	printf("용돈 : %d\n", (Child.*pChildField));
+
+	pChildMethod = &CChild::GetPocketMoney;
+	printf("자식의 용돈 ; %d\n", (Child.*pChildMethod)());
+
+	pChildField = &CParent::Child;
+	printf("자식의 수 : %d\n", Child.*pChildField);
+
+	pChildMethod = &CParent::GetChild;
+	printf("자식의 수 : %d\n", (Child.*pChildMethod)());
+	
+
+	return 0;
+}

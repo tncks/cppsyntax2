@@ -1,0 +1,34 @@
+#include "stdafx.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+class CData
+{
+public:
+	T Data;
+public:
+	CData(void) : Data(0) {}
+	CData(T tData) : Data(tData) {}
+	T GetData(void) { return Data; }
+
+	void ShowMessage(void) { printf("구성원 포인터 테스트!\n"); }
+};
+
+int main(void)
+{
+	CData<int> Data(230);
+	int CData<int>::*pMember = &CData<int>::Data;
+
+	printf("Data : %d\n", Data.GetData());
+	Data.*pMember = 610;
+	printf("Data : %d\n", Data.*pMember);
+
+	void (CData<int>::*pFunction)(void) = &(CData<int>::ShowMessage);
+	Data.ShowMessage();
+	(Data.*pFunction)();
+
+
+}
